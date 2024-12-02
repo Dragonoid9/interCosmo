@@ -1,0 +1,3 @@
+security:
+        jwt:
+          secret-key: nothing to be surprised of
