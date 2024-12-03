@@ -2,6 +2,7 @@ package com.interntest.cosmotechintl.userconfig;
 
 import com.interntest.cosmotechintl.config.UserPrincipal;
 import com.interntest.cosmotechintl.service.UserService;
+import com.interntest.cosmotechintl.service.UserServiceImplementation;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;

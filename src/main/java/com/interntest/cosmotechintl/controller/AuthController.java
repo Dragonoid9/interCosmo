@@ -1,17 +1,11 @@
 package com.interntest.cosmotechintl.controller;
 
 
-import com.interntest.cosmotechintl.config.JwtGenerator;
-import com.interntest.cosmotechintl.config.UserPrincipal;
 import com.interntest.cosmotechintl.dto.requestDto.LoginRequest;
 import com.interntest.cosmotechintl.dto.responseDto.LoginResponse;
 import com.interntest.cosmotechintl.service.AuthService;
-import com.interntest.cosmotechintl.service.UserService;
+import com.interntest.cosmotechintl.service.AuthServiceImplementation;
 import lombok.RequiredArgsConstructor;
-import org.springframework.security.authentication.AuthenticationManager;
-import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
-import org.springframework.security.core.GrantedAuthority;
-import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
