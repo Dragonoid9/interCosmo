@@ -20,7 +20,12 @@ public class HomeController {
     public String secured(@AuthenticationPrincipal UserPrincipal userPrincipal) {
         return "You are secured!: UserId: "+userPrincipal.getUserId()
                 +"  Username: "+userPrincipal.getUsername()
-        +"User email:"+userPrincipal.getEmail()
+        +"   User email:"+userPrincipal.getEmail()
                 +"Role is :"+userPrincipal.getAuthorities();
+    }
+
+    @GetMapping("/admin")
+    public String admin(@AuthenticationPrincipal UserPrincipal userPrincipal) {
+        return "Only admin should be able to see this one.";
     }
 }
