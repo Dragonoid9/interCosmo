@@ -1,7 +1,6 @@
 package com.interntest.cosmotechintl.filter;
 
 import com.interntest.cosmotechintl.config.JwtToPrincipalConverter;
-import com.interntest.cosmotechintl.config.UserPrincipal;
 import com.interntest.cosmotechintl.config.UserPrincipalAuthenticationToken;
 import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;
@@ -32,7 +31,9 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
                 .map(jwtFilter::decode)
                         .map(jwtToPrincipalConverter::convert)
                                 .map(UserPrincipalAuthenticationToken::new)
-                                        .ifPresent(authentication -> SecurityContextHolder.getContext().setAuthentication(authentication));
+                .ifPresent(authentication -> {
+                    SecurityContextHolder.getContext().setAuthentication(authentication);
+                });
 
         filterChain.doFilter(request,response);
     }

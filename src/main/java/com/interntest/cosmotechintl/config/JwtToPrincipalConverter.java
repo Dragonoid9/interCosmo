@@ -5,6 +5,7 @@ import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.stereotype.Component;
 
 import java.util.List;
+import java.util.stream.Collectors;
 
 @Component
 public class JwtToPrincipalConverter {
@@ -13,14 +14,17 @@ public class JwtToPrincipalConverter {
         return UserPrincipal.builder()
                 .userId(Long.valueOf(decodedJWT.getSubject()))
                 .email(decodedJWT.getClaim("e").asString())
+                .username(decodedJWT.getClaim("un").asString())
                 .authorities(extractAuthorities(decodedJWT))
                 .build();
     }
 
     private List<SimpleGrantedAuthority> extractAuthorities(DecodedJWT decodedJWT) {
         var claim = decodedJWT.getClaim("r");
-        if(claim.isNull() || !claim.isMissing())
+        if(claim.isNull())
             return List.of();
-        return claim.asList(SimpleGrantedAuthority.class);
+        return claim.asList(String.class).stream()
+                .map(SimpleGrantedAuthority::new)
+                .collect(Collectors.toList());
     }
 }

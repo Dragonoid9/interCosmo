@@ -3,7 +3,6 @@ package com.interntest.cosmotechintl.userconfig;
 import com.interntest.cosmotechintl.config.UserPrincipal;
 import com.interntest.cosmotechintl.service.UserService;
 import lombok.RequiredArgsConstructor;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
@@ -21,11 +20,10 @@ public class CustomUserDetailService implements UserDetailsService {
     @Override
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
         var user =userService.findByEmail(username).orElseThrow();
-
         return UserPrincipal.builder()
                 .userId(user.getUserId())
                 .email(user.getEmail())
-                .userName(user.getUserName())
+                .username(user.getUserName())
                 .authorities(List.of(new SimpleGrantedAuthority(user.getRoles())))
                 .password(user.getPassword())
                 .build();
