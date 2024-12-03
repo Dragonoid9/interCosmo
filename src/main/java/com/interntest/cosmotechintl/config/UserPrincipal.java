@@ -17,6 +17,8 @@ public class UserPrincipal implements UserDetails {
 
     private final String email;
 
+    private final String password;
+
     private final Collection<? extends GrantedAuthority> authorities;
 
     @Override
@@ -26,7 +28,7 @@ public class UserPrincipal implements UserDetails {
 
     @Override
     public String getPassword() {
-        return "";
+        return password;
     }
 
     @Override

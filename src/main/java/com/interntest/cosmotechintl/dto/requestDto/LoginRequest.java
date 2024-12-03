@@ -1,4 +1,4 @@
-package com.interntest.cosmotechintl.dto;
+package com.interntest.cosmotechintl.dto.requestDto;
 
 
 import lombok.Builder;
