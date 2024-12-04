@@ -4,7 +4,7 @@ package com.interntest.cosmotechintl.dto.requestDto;
 import com.interntest.cosmotechintl.entity.UserRole;
 import lombok.*;
 
-import java.util.Set;
+import java.util.List;
 
 @Setter
 @Getter
@@ -13,10 +13,9 @@ import java.util.Set;
 @Builder
 public class UserRequest {
 
-    private Long id;
     private String username;
     private String password;
-    private Set<UserRole> roles;
+    private List<String> roles;
 
 
 }

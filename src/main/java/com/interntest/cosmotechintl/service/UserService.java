@@ -10,7 +10,7 @@ import java.util.List;
 public interface UserService {
     UserResponse saveUser(UserRequest userRequest);
 
-    UserResponse getUser();
+//    UserResponse getUser();
 
     List<UserResponse> getAllUser();
 }

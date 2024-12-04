@@ -1,15 +1,15 @@
 package com.interntest.cosmotechintl.dto.responseDto;
 
 import com.interntest.cosmotechintl.entity.UserRole;
-import lombok.Getter;
-import lombok.RequiredArgsConstructor;
-import lombok.Setter;
+import lombok.*;
 
 import java.util.Set;
 
 @Getter
 @Setter
-@RequiredArgsConstructor
+@AllArgsConstructor
+@NoArgsConstructor
+@Builder
 public class UserResponse {
 
     private Long id;
