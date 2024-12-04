@@ -21,10 +21,17 @@ public class RefreshTokenService {
     @Autowired
     UserRepository userRepository;
 
-    @Value("${jwt.expiration}")
+    @Value("${jwt.refreshexpiration}")
     private long expirationTime;
 
     public RefreshToken createRefreshToken(String username) {
+        RefreshToken existingToken = refreshTokenRepository.findByUserInfo(userRepository.findByUsername(username));
+        if (existingToken != null) {
+            existingToken.setToken(UUID.randomUUID().toString());
+            existingToken.setExpiryDate(Instant.now().plusMillis(expirationTime));
+            return refreshTokenRepository.save(existingToken);
+        }
+
         RefreshToken refreshToken = RefreshToken.builder()
                 .userInfo(userRepository.findByUsername(username))
                 .token(UUID.randomUUID().toString())
@@ -44,6 +51,5 @@ public class RefreshTokenService {
             throw new RuntimeException(token.getToken() + " Refresh token is expired. Please make a new login..!");
         }
         return token;
-
     }
 }

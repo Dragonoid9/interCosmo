@@ -10,8 +10,7 @@ public class PublicUrls {
             "/v3/api-docs/**",
             "/swagger-resources/**",
             "/swagger-resources",
-            "/api/v1/save",
-            "/api/v1/login",
-            "/api/v1/refreshToken"
+            "/api/v1/user/login",
+            "/api/v1/user/refreshToken"
     };
 }

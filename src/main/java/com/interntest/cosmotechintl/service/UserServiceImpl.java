@@ -53,13 +53,12 @@ public class UserServiceImpl implements UserService {
         return mapToUserResponse(savedUser);
     }
 
-//    @Override
-//    public UserResponse getUserById(Long id) {
-//        UserInfo userInfo = userRepository.findById(id)
-//                .orElseThrow(() -> new RuntimeException("User not found with ID: " + id));
-//
-//        return mapToUserResponse(userInfo);
-//    }
+    @Override
+    public UserResponse getUserById(Long id) {
+        UserInfo userInfo = userRepository.findById(id)
+                .orElseThrow(() -> new RuntimeException("User not found with ID: " + id));
+        return mapToUserResponse(userInfo);
+    }
 
     @Override
     public List<UserResponse> getAllUser() {
@@ -69,6 +68,13 @@ public class UserServiceImpl implements UserService {
         return users.stream()
                 .map(this::mapToUserResponse)
                 .collect(Collectors.toList());
+    }
+
+    @Override
+    public void deleteUserById(Long id) {
+        UserInfo userInfo = userRepository.findById(id)
+                .orElseThrow(() -> new RuntimeException("User not found with ID: " + id));
+        userRepository.delete(userInfo);
     }
 
     // Helper method to map UserInfo entity to UserResponse DTO

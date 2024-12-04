@@ -11,6 +11,7 @@ import com.interntest.cosmotechintl.service.RefreshTokenService;
 import com.interntest.cosmotechintl.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
@@ -18,8 +19,10 @@ import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.List;
+
 @Controller
-@RequestMapping("/api/v1")
+@RequestMapping("/api/v1/user")
 public class UserController {
 
     @Autowired
@@ -34,7 +37,8 @@ public class UserController {
     @Autowired
     private AuthenticationManager authenticationManager;
 
-    @PostMapping("/save")
+    @PreAuthorize("hasRole('ADMIN')")
+    @PostMapping("/register")
     @ResponseBody
     public ResponseEntity<UserResponse> saveUser(@RequestBody UserRequest userRequest) {
         try {
@@ -80,4 +84,30 @@ public class UserController {
                 })
                 .orElseThrow(() -> new RuntimeException("Invalid or expired refresh token"));
     }
+
+    @GetMapping("/getall")
+    @ResponseBody
+    @PreAuthorize("hasRole('ADMIN')")
+    public ResponseEntity<List<UserResponse>> getAllUsers() {
+        List<UserResponse> userResponses = userService.getAllUser();
+        return ResponseEntity.ok(userResponses);
+    }
+
+    @GetMapping("/retrieve/{id}")
+    @ResponseBody
+    @PreAuthorize("hasRole('USER')")
+    public ResponseEntity<UserResponse> getUserById(@PathVariable Long id) {
+        UserResponse userResponse = userService.getUserById(id);
+        return ResponseEntity.ok(userResponse);
+    }
+
+
+    @DeleteMapping("/delete/{id}")
+    @ResponseBody
+    @PreAuthorize("hasRole('ADMIN')")
+    public ResponseEntity<String> deleteUserById(@PathVariable Long id) {
+        userService.deleteUserById(id);
+        return ResponseEntity.ok("User deleted successfully with ID: " + id);
+    }
+
 }

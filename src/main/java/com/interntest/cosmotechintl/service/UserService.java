@@ -10,7 +10,9 @@ import java.util.List;
 public interface UserService {
     UserResponse saveUser(UserRequest userRequest);
 
-//    UserResponse getUser();
+    UserResponse getUserById(Long id);
+
+    void deleteUserById(Long id);
 
     List<UserResponse> getAllUser();
 }
