@@ -36,6 +36,21 @@ public class BookController {
         }
     }
 
+    @PreAuthorize("hasAnyRole('ADMIN', 'MODERATOR')")
+    @PostMapping("/registerMultiple")
+    @ResponseBody
+    public ResponseEntity<String> registerMultipleBooks(@RequestBody List<BookRegisterDto> bookRegisterDtos) {
+        try {
+            bookService.registerMultipleBooks(bookRegisterDtos);
+            return ResponseEntity.ok("Books registered successfully.");
+        } catch (IllegalStateException e) {
+            // Return the error message from the exception (which contains book details)
+            return ResponseEntity.status(400).body("Error registering books: " + e.getMessage());
+        } catch (Exception e) {
+            return ResponseEntity.status(500).body("Internal server error: " + e.getMessage());
+        }
+    }
+
     @GetMapping("/getall")
     @ResponseBody
     public ResponseEntity<List<BookInfo>> getAllBooks() {

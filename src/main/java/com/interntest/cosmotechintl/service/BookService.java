@@ -10,6 +10,8 @@ public interface BookService {
 
     void registerBook(BookRegisterDto bookRegisterDto);
 
+    void registerMultipleBooks(List<BookRegisterDto> bookRegisterDtos);
+
     boolean existsByBookNameAndAuthorAndPublisher(String bookName, String author, String publisher);
 
     boolean existsByBookNameAndPublisherAndDifferentAuthor(String bookName, String publisher, String author);

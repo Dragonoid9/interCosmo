@@ -5,6 +5,7 @@ import com.interntest.cosmotechintl.entity.BookInfo;
 import com.interntest.cosmotechintl.repository.BookInfoRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 import java.util.Optional;
@@ -21,21 +22,8 @@ public class BookServiceImplementation implements BookService {
 
     @Override
     public void registerBook(BookRegisterDto bookRegisterDto) {
-        // Check if the book with the same name, author, and publisher already exists
-        if (existsByBookNameAndAuthorAndPublisher(
-                bookRegisterDto.getBookName(),
-                bookRegisterDto.getAuthor(),
-                bookRegisterDto.getPublisher())) {
-            throw new IllegalStateException("A book with the same name, author, and publisher already exists.");
-        }
-
-        // Check if the book with the same name and publisher exists, but the author is different
-        if (existsByBookNameAndPublisherAndDifferentAuthor(
-                bookRegisterDto.getBookName(),
-                bookRegisterDto.getPublisher(),
-                bookRegisterDto.getAuthor())) {
-            throw new IllegalStateException("A book with the same name and publisher but a different author already exists.");
-        }
+        // Use the helper method to check for duplicates
+        checkForDuplicateBook(bookRegisterDto);
 
         // Create and save the new book
         BookInfo bookInfo = new BookInfo();
@@ -45,6 +33,24 @@ public class BookServiceImplementation implements BookService {
         bookInfo.setPrice(bookRegisterDto.getPrice());
         bookInfo.setPageCount(bookRegisterDto.getPageCount());
         bookInfoRepository.save(bookInfo);
+    }
+
+    @Override
+    @Transactional
+    public void registerMultipleBooks(List<BookRegisterDto> bookRegisterDtos) {
+        for (BookRegisterDto bookRegisterDto : bookRegisterDtos) {
+            // Use the helper method to check for duplicates
+            checkForDuplicateBook(bookRegisterDto);
+
+            // Create and save the new book
+            BookInfo bookInfo = new BookInfo();
+            bookInfo.setBookName(bookRegisterDto.getBookName());
+            bookInfo.setAuthor(bookRegisterDto.getAuthor());
+            bookInfo.setPublisher(bookRegisterDto.getPublisher());
+            bookInfo.setPrice(bookRegisterDto.getPrice());
+            bookInfo.setPageCount(bookRegisterDto.getPageCount());
+            bookInfoRepository.save(bookInfo);
+        }
     }
 
     @Override
@@ -91,19 +97,8 @@ public class BookServiceImplementation implements BookService {
     public boolean modifyBook(Long id, BookRegisterDto bookRegisterDto) {
         Optional<BookInfo> bookOptional = bookInfoRepository.findById(id);
         if (bookOptional.isPresent()) {
-            if (existsByBookNameAndAuthorAndPublisher(
-                    bookRegisterDto.getBookName(),
-                    bookRegisterDto.getAuthor(),
-                    bookRegisterDto.getPublisher())) {
-                throw new IllegalStateException("A book with the same name, author, and publisher already exists.");
-            }
-
-            if (existsByBookNameAndPublisherAndDifferentAuthor(
-                    bookRegisterDto.getBookName(),
-                    bookRegisterDto.getPublisher(),
-                    bookRegisterDto.getAuthor())) {
-                throw new IllegalStateException("A book with the same name and publisher but a different author already exists.");
-            }
+            // Check for duplicates
+            checkForDuplicateBook(bookRegisterDto);
 
             BookInfo bookInfo = bookOptional.get();
             bookInfo.setBookName(bookRegisterDto.getBookName());
@@ -120,5 +115,33 @@ public class BookServiceImplementation implements BookService {
     @Override
     public Optional<BookInfo> findById(Long id) {
         return bookInfoRepository.findById(id);
+    }
+
+    private void checkForDuplicateBook(BookRegisterDto bookRegisterDto) {
+        // Check if the book with the same name, author, and publisher already exists
+        if (existsByBookNameAndAuthorAndPublisher(
+                bookRegisterDto.getBookName(),
+                bookRegisterDto.getAuthor(),
+                bookRegisterDto.getPublisher())) {
+            String errorMessage = String.format(
+                    "A book with the same name, author, and publisher already exists: %s, %s, %s",
+                    bookRegisterDto.getBookName(),
+                    bookRegisterDto.getAuthor(),
+                    bookRegisterDto.getPublisher());
+            throw new IllegalStateException(errorMessage);
+        }
+
+        // Check if the book with the same name and publisher exists, but the author is different
+        if (existsByBookNameAndPublisherAndDifferentAuthor(
+                bookRegisterDto.getBookName(),
+                bookRegisterDto.getPublisher(),
+                bookRegisterDto.getAuthor())) {
+            String errorMessage = String.format(
+                    "A book with the same name and publisher but a different author already exists: %s, %s, %s",
+                    bookRegisterDto.getBookName(),
+                    bookRegisterDto.getAuthor(),
+                    bookRegisterDto.getPublisher());
+            throw new IllegalStateException(errorMessage);
+        }
     }
 }

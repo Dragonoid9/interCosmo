@@ -21,9 +21,9 @@ public class BookRegisterDto {
     @NotBlank(message = "Publisher name cannot be empty")
     private String publisher;
 
-    @Min(value = 1, message = "Price must be greater than 0")
+    @Min(value = 100, message = "Price must be greater than 0")
     private int price;
 
-    @Min(value = 1, message = "Page count must be greater than 0")
+    @Min(value = 50, message = "Page count must be greater than 0")
     private int pageCount;
 }
