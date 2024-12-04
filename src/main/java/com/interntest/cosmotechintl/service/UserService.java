@@ -1,20 +1,16 @@
 package com.interntest.cosmotechintl.service;
 
-import com.interntest.cosmotechintl.entity.UserInfo;
-import com.interntest.cosmotechintl.repository.UserInfoRepository;
-import org.springframework.context.annotation.Lazy;
-import org.springframework.security.crypto.password.PasswordEncoder;
-
-import java.util.Optional;
-
-public interface UserService  {
 
 
-    public Optional<UserInfo> findByEmail(String email);
+import com.interntest.cosmotechintl.dto.requestDto.UserRequest;
+import com.interntest.cosmotechintl.dto.responseDto.UserResponse;
 
-    public boolean authenticateUser(String email, String rawPassword);
+import java.util.List;
 
-    public void registerUser(UserInfo userInfo);
+public interface UserService {
+    UserResponse saveUser(UserRequest userRequest);
 
-    public Optional<UserInfo> findByUserName(String userName);
+    UserResponse getUser();
+
+    List<UserResponse> getAllUser();
 }

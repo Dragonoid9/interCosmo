@@ -1,32 +1,31 @@
 package com.interntest.cosmotechintl.entity;
 
-
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import lombok.*;
 
+import java.util.HashSet;
+import java.util.Set;
 
 @Entity
-@Table(name="users")
 @Getter
 @Setter
 @Builder
-@AllArgsConstructor
 @NoArgsConstructor
+@AllArgsConstructor
+@Table(name = "users")
 public class UserInfo {
 
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
-    private Long userId;
-
-    @Column(unique = true)
-    private String userName;
-
-    @Column(unique = true)
-    private String email;
-
+    @Column(name = "id")
+    private long id;
+    private String username;
+    @JsonIgnore
     private String password;
-
-    private String roles;
+    @ManyToMany(fetch = FetchType.EAGER)
+    @Builder.Default
+    private Set<UserRole> roles = new HashSet<>();
 
 
 }

@@ -74,11 +74,29 @@
 			<artifactId>springdoc-openapi-starter-webmvc-ui</artifactId>
 			<version>2.7.0</version>
 		</dependency>
-		<!-- https://mvnrepository.com/artifact/com.auth0/java-jwt -->
+<!--		&lt;!&ndash; https://mvnrepository.com/artifact/com.auth0/java-jwt &ndash;&gt;-->
+<!--		<dependency>-->
+<!--			<groupId>com.auth0</groupId>-->
+<!--			<artifactId>java-jwt</artifactId>-->
+<!--			<version>4.4.0</version>-->
+<!--		</dependency>-->
+
 		<dependency>
-			<groupId>com.auth0</groupId>
-			<artifactId>java-jwt</artifactId>
-			<version>4.4.0</version>
+			<groupId>io.jsonwebtoken</groupId>
+			<artifactId>jjwt-api</artifactId>
+			<version>0.11.5</version>
+		</dependency>
+		<!-- https://mvnrepository.com/artifact/io.jsonwebtoken/jjwt-impl -->
+		<dependency>
+			<groupId>io.jsonwebtoken</groupId>
+			<artifactId>jjwt-impl</artifactId>
+			<version>0.11.5</version>
+		</dependency>
+		<!-- https://mvnrepository.com/artifact/io.jsonwebtoken/jjwt-jackson -->
+		<dependency>
+			<groupId>io.jsonwebtoken</groupId>
+			<artifactId>jjwt-jackson</artifactId>
+			<version>0.11.5</version>
 		</dependency>
 
 	</dependencies>
