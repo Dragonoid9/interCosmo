@@ -2,14 +2,17 @@ package com.interntest.cosmotechintl.controller;
 
 import com.interntest.cosmotechintl.dto.requestDto.AuthRequestDto;
 import com.interntest.cosmotechintl.dto.requestDto.RefreshTokenRequestDto;
+import com.interntest.cosmotechintl.dto.requestDto.RoleRequest;
 import com.interntest.cosmotechintl.dto.requestDto.UserRequest;
 import com.interntest.cosmotechintl.dto.responseDto.JwtResponseDto;
 import com.interntest.cosmotechintl.dto.responseDto.UserResponse;
 import com.interntest.cosmotechintl.entity.RefreshToken;
+import com.interntest.cosmotechintl.entity.UserRole;
 import com.interntest.cosmotechintl.service.JwtService;
 import com.interntest.cosmotechintl.service.RefreshTokenService;
 import com.interntest.cosmotechintl.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.authentication.AuthenticationManager;
@@ -108,6 +111,29 @@ public class UserController {
     public ResponseEntity<String> deleteUserById(@PathVariable Long id) {
         userService.deleteUserById(id);
         return ResponseEntity.ok("User deleted successfully with ID: " + id);
+    }
+
+    @PostMapping("/role/add")
+    @ResponseBody
+    public ResponseEntity<UserRole> addRole(@RequestBody RoleRequest roleRequest) {
+        try {
+            UserRole role = userService.addRole(roleRequest);
+            return ResponseEntity.ok(role);
+        } catch (Exception e) {
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(null);
+        }
+    }
+
+
+    @DeleteMapping("/roles/{id}")
+    @ResponseBody
+    public ResponseEntity<String> deleteRole(@PathVariable Long id) {
+        try {
+            userService.deleteRoleById(id);
+            return ResponseEntity.ok("Role deleted successfully.");
+        } catch (RuntimeException e) {
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(e.getMessage());
+        }
     }
 
 }
